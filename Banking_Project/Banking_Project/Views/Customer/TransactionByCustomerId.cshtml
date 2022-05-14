@@ -1,0 +1,95 @@
+﻿@model Banking_Project.Models.TransactionByCustomer
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+@{
+    ViewBag.Title = "TransactionByCustomerId";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    h4{
+        color:green;
+    }
+</style>
+<h4 class="text-center">Serch Transaction Histoy By Customer Id</h4>
+@if (Session["UserName"] == null)
+{
+    Response.Redirect("/adminlogin/index");
+}
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="col-md-6">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="col-md-6">
+            @Html.EditorFor(model => model.CustomerId, new { htmlAttributes = new { @class = "form-control",placeholder="Enter CustomerId"} })<br />
+            <div class="col-md-offset-2 col-md-10">
+                <input type="button" value="Search" class="btn btn-default" id="btnSearch"/>
+            </div>
+        </div>
+    </div>
+}
+<hr />
+<div class="row">
+    <div class="col-lg-offset-1 col-lg-12">
+        <table class="table table-bordered table-hover table-striped">
+            <thead>
+                <tr>
+                    <th style="text-align:center;">
+                        No
+                    </th>
+                    <th style="text-align:center;">
+                        @Html.DisplayNameFor(model => model.SenderAccountNo)
+                    </th>
+                    <th style="text-align:center;">
+                        @Html.DisplayNameFor(model => model.ReceiverAccountNo)
+                    </th>
+                    <th style="text-align:center;">
+                        @Html.DisplayNameFor(model => model.TransactionAmount)
+                    </th>
+                    <th style="text-align:center;">
+                        @Html.DisplayNameFor(model => model.TransactionDate)
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+        </table>
+    </div>
+</div>
+<script>
+    $('#btnSearch').click(function (e) {
+        e.preventDefault();
+        var CustomerId = $('#CustomerId').val();
+        $.ajax({
+            url: "/Customer/TransactionByCustomerId",
+            dataType: "JSON",
+            type: "POST",
+            data: { CustomerId },
+            success: function (data) {
+                console.log(data);
+                if (data.msg.RespMessageType == "MS") {
+                    SuccessMessageBox(data.msg.RespDesp);
+                    var content = "";
+                    $('#tbody').empty();
+                    $('#tbody').append(content);
+                    for (var i = 0; i < data.lstTransactionByCustomer.length; i++) {
+                        var item = data.lstTransactionByCustomer[i];
+                        content += `<tr>
+                        <td class ="text-center">${i + 1}</td>
+                        <td class ="text-center">${item.SenderAccountNo}</td>
+                        <td class ="text-right">${item.ReceiverAccountNo}</td>
+                        <td class ="text-right">${item.TransactionAmount} </td>
+                        <td class ="text-right">${item.TransactionDateStr} </td>
+                        </tr>
+                        `;
+                    }
+                    $('#tbody').append(content);
+                }
+                else if (data.msg.RespMessageType == "ME") {
+                    WarningMessageBox(data.msg.RespDesp);
+                }
+            }
+        });
+
+    });
+</script>

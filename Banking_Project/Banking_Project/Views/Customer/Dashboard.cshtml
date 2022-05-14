@@ -1,0 +1,341 @@
+﻿@model Banking_Project.Models.CustomerModel
+<link href="~/Content/plugins/datatables/dataTables.bootstrap4.css" rel="stylesheet" />
+<link href="~/Content/jquery.dataTables.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.dataTables.js"></script>
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    #chart {
+        padding: 0;
+        max-width: 480px;
+        margin: 35px auto;
+        margin-top:100px;
+       
+    }
+  
+    #chart1{
+        max-width: 650px;
+        margin: 35px auto;
+         margin-top:20px;
+    }
+
+
+</style>
+
+@if (Session["UserName"] == null)
+{
+    Response.Redirect("/adminlogin/index");
+}
+
+<div class="row">
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-info">
+            <div class="inner">
+                <h3>@Html.Raw(Json.Encode(Model.lstCustomer.ToList().Count))</h3>
+
+                <p>Created Customers</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-bag"></i>
+            </div>
+            <a href="/Customer/index" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-success">
+            <div class="inner">
+                <h3>@Html.Raw(Json.Encode(Model.lstAccount.ToList().Count))</h3>
+                <p>Total Account</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-stats-bars"></i>
+            </div>
+            <a href="/customer/customeraccounts/" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-warning">
+            <div class="inner">
+                <h3 style="color:white">
+                  @Html.Raw(Json.Encode((Model.lstAccount.Sum(x => x.Amount))))
+                </h3>
+                <p>Total Deposite Amounts</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-person-add"></i>
+            </div>
+            <a href="/customer/customeraccounts" class="small-box-footer">More info<i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-danger">
+            <div class="inner">
+                <h3>
+                    @foreach (var t in Model.lstTotalTransaction)
+                    {
+                        <span>
+                            @Model.lstTotalTransaction.Sum(x => x.TransactionAmount).ToString("n0")
+                        </span>
+                    }
+                </h3>
+                <p>Total Transaction Amount</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-pie-graph"></i>
+            </div>
+            <a href="/Transaction/Index" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <!-- ./col -->
+</div>
+
+<div class="row">
+    <div class="col-lg-6">
+        <div id="chart"></div>
+    </div>
+    <div class="col-lg-6">
+        <div id="chart1"></div>
+    </div>
+</div>
+
+<table id="example1" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NRC)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedDate)
+            </th>
+            <th>
+                TotalAccount
+            </th>
+        </tr>
+    </thead>
+   
+    <tbody>
+        @foreach (var item in Model.lstCustomer)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CustomerId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CustomerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NRC)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                </td>
+                <td>
+                    @Model.lstAccount.Where(x => x.CustomerId == item.CustomerId).ToList().Count
+                </td>
+            </tr>
+        }
+    </tbody>
+    
+</table>
+<div class="row">
+    <div class="col-lg-6">
+        <table class="table table-bordered table-hover table-responsive">
+            <thead>
+                <tr>
+                    <th>
+                        Account No
+                    </th>
+                    <th>
+                        Account Type
+                    </th>
+                    <th>
+                        Total Amount
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.lstAccount)
+            {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AccountNo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AccountType)
+                        </td>
+                        <td>
+                            @Model.lstAccount.Where(x => x.AccountNo == item.AccountNo).Sum(x => x.Amount).ToString("n0")
+                        </td>
+
+                    </tr>
+            }
+            </tbody>
+        </table>
+        @*@foreach (var t in Model.lstTotalTransaction)
+        {
+            <span>
+                @Model.lstTotalTransaction.Sum(x => x.TransactionAmount).ToString("n0");
+            </span>
+        }*@
+    </div>
+
+    <script>
+        window.Promise ||
+          document.write(
+            '<script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"><\/script>'
+          )
+        window.Promise ||
+          document.write(
+            '<script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20171210/classList.min.js"><\/script>'
+          )
+        window.Promise ||
+          document.write(
+            '<script src="https://cdn.jsdelivr.net/npm/findindex_polyfill_mdn"><\/script>'
+          )
+    </script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+
+    <script>
+        // Replace Math.random() with a pseudo-random number generator to get reproducible results in e2e tests
+        // Based on https://gist.github.com/blixt/f17b47c62508be59987b
+        var _seed = 42
+        Math.random = function() {
+            _seed = (_seed * 16807) % 2147483647
+            return (_seed - 1) / 2147483646
+        }
+    </script>
+</div>
+
+
+    @*<div class="row">
+        <div class="col-lg-12">
+           @RenderPage("~/Views/Transaction/BarChart.cshtml")
+        </div>
+    </div>*@
+
+<script>
+    var total=@Html.Raw(Json.Encode((Model.lstAccount.Sum(x => x.Amount))));
+    var transfer=@Html.Raw(Json.Encode(Model.lstTotalTransaction.Sum(x => x.TransactionAmount)));
+        var options = {
+          series: [total,transfer],
+          chart: {
+          width: 380,
+          type: 'pie',
+        },
+        labels: ['DepositeAmount','TransferAmount'],
+        responsive: [{
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200
+            },
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }]
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
+
+
+</script>
+
+
+
+<script>
+    var lst=@Html.Raw(Json.Encode(Model.lstItem));
+    var item1= lst[0].lst;
+    var item2= lst[1].lst;
+    var item3= lst[2].lst;
+        var options = {
+          series: [{
+          name: 'Transfer',
+          data:item1
+        }, {
+          name: 'TopUp',
+          data: item2
+        }, {
+          name: 'Deposite',
+          data: item3
+        }],
+          chart: {
+          type: 'bar',
+          height: 350
+        },
+        plotOptions: {
+          bar: {
+            horizontal: false,
+            columnWidth: '75%',
+            endingShape: 'rounded'
+          },
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          show: true,
+          width: 2,
+          colors: ['transparent']
+        },
+        xaxis: {
+          categories: ['Jan','Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct','Nov','Dec'],
+        },
+        yaxis: {
+          title: {
+            text: '$ (MMK)'
+          }
+        },
+        fill: {
+          opacity: 1
+        },
+        tooltip: {
+          y: {
+            formatter: function (val) {
+                return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " MMK"
+            }
+          }
+        }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart1"), options);
+        chart.render();
+
+
+</script>
+
+<script>
+  $(function () {
+    $("#example1").DataTable();
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autowidth":true,
+      "scrollX":true
+    });
+  });
+</script>

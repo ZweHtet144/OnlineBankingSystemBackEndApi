@@ -1,0 +1,96 @@
+﻿@model Banking_Project.Models.TransactionHistoryModel
+<link href="~/Content/plugins/datatables/dataTables.bootstrap4.css" rel="stylesheet" />
+<link href="~/Content/jquery.dataTables.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.dataTables.js"></script>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    h4{
+        color:green;
+    }
+    @if (Session["UserName"] == null)
+{
+    Response.Redirect("/adminlogin/index");
+}
+</style>
+<h4 class="text-center">Over All Transaction Report</h4>
+    <table id="example1" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.TransactionId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AccountNo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TransactionAmount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Flash)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TrasactionType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TransactionDate)
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @for (int i = 0; i < Model.lstTrasactionTotal; i++)
+            {
+                var item = Model.lstTransactionHistory[i];
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TransactionId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AccountNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TransactionAmount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Flash)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TrasactionType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TransactionDate)
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+
+  
+    <script>
+        $(function () {
+            $("#example1").DataTable();
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "scrollX": true
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        function preventBack() {
+            window.history.forward();
+        }
+        setTimeout("preventBack()", 0);
+        window.onunload = function () {
+            null;
+        }
+    </script>

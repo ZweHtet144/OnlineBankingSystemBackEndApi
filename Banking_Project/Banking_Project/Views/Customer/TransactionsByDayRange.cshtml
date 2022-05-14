@@ -1,0 +1,120 @@
+﻿@model Banking_Project.Models.TransactionByDayRange
+
+@{
+    ViewBag.Title = "TransactionByDayRange";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<style>
+    h4 {
+        color: green;
+    }
+</style>
+<h4 class="text-center">Transaction History Between Desire Date</h4>
+<hr />
+@if (Session["UserName"] == null)
+{
+    Response.Redirect("/adminlogin/index");
+}
+@using (Html.BeginForm())
+{
+    <div class="row col-lg-offset-3">
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label>Start Date</label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @type = "date", @class = "form-control " } })
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label>End Date</label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @type = "date", @class = "form-control date-picker" } })<br />
+                    <input type="button" id="btnSearch" value="Search" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div>
+                
+            </div>
+           
+        </div>
+      
+
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-offset-1 col-lg-12">
+            <table class="table table-bordered table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th style="text-align:center;">
+                            No
+                        </th>
+                        <th style="text-align:center;">
+                            @Html.DisplayNameFor(model => model.SenderAccountNo)
+                        </th>
+                        <th style="text-align:center;">
+                            @Html.DisplayNameFor(model => model.ReceiverAccountNo)
+                        </th>
+                        <th style="text-align:center;">
+                            @Html.DisplayNameFor(model => model.TransactionAmount)
+                        </th>
+                        <th style="text-align:center;">
+                            @Html.DisplayNameFor(model => model.TransactionDate)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="tbody"></tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+    $('#btnSearch').click(function (e) {
+        e.preventDefault();
+        var StartDate = $('#StartDate').val().split("-");
+        var EndDate = $('#EndDate').val().split("-");
+        var _StartDate = StartDate[0] + "/" + StartDate[1] + "/" + StartDate[2];
+        var _EndDate = EndDate[0] + "/" + EndDate[1] + "/" + EndDate[2];
+        $.ajax({
+            url: "/Customer/TransactionsByDayRange",
+            dataType: "JSON",
+            type: "POST",
+            data: { StartDate: _StartDate, EndDate: _EndDate },
+            success: function (data) {
+                console.log(data);
+                if (data.msg.RespMessageType == "MS") {
+
+                    SuccessMessageBox(data.msg.RespDesp);
+                    var content = "";
+                    $('#tbody').empty();
+                    $('#tbody').append(content);
+                    for (var i = 0; i < data.lstDayRange.length; i++) {
+                        var item = data.lstDayRange[i];
+                        content += `<tr>
+                        <td class ="text-center">${i + 1}</td>
+                        <td class ="text-center">${item.SenderAccountNo}</td>
+                        <td class ="text-right">${item.ReceiverAccountNo}</td>
+                        <td class ="text-right">${item.TransactionAmount} </td>
+                        <td class ="text-right">${item.TranscationDateStr} </td>
+                        </tr>
+                        `;
+                    }
+
+                $('#tbody').append(content);
+            }
+                else if (data.msg.RespMessageType == "ME") {
+                    WarningMessageBox(data.msg.RespDesp);
+                }
+
+            }
+
+        });
+
+    });
+    </script>
+}
+

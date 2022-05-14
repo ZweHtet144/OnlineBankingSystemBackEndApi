@@ -1,0 +1,131 @@
+﻿@model Banking_Project.Models.Customer
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<h2>Edit</h2>
+<link href="//fonts.googleapis.com/css?family=Josefin+Sans:300,400,600,700" rel="stylesheet">
+<link href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+<link href="~/Content/dist/css/form.css" rel="stylesheet" />
+
+<style>
+    .bg {
+        background-image: url('../../Content/dist/img/banner.jpg');
+        background-size: cover;
+    }
+</style>
+@if (Session["UserName"] == null)
+{
+    Response.Redirect("/adminlogin/index");
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    @*<div class="form-horizontal">
+        <h4>Customer</h4>
+        <hr />
+    
+        @Html.HiddenFor(model => model.CustomerId)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CustomerName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CustomerName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.NRC, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NRC, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NRC, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+      
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Phoneno, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Phoneno, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Phoneno, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>*@
+
+
+    <div class="bg">
+        <div class="bg-w3layouts-main">
+            <h2>Depostie Form</h2>
+            <div class="form-content-agileinfo">
+                @Html.HiddenFor(model => model.CustomerId)
+
+                <div class="main-divs-agileits-w3layouts">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="bottom-w3-agileits-space form-text1 ">
+                        @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.CustomerName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="bottom-w3-agileits-space form-text2">
+                        @Html.EditorFor(model => model.NRC, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.NRC, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="main-divs-agileits-w3layouts">
+                    <div class="bottom-w3-agileits-space form-text1">
+                        @Html.EditorFor(model => model.Phoneno, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Phoneno, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="main-divs-agileits-w3layouts">
+                    <div class="bottom-w3-agileits-space form-text1">
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="main-divs-agileits-w3layouts">
+                    <div class="bottom-w3-agileits-space form-text1">
+                        @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <input type="submit" value="Save" class="btn btn-success">
+            <div class="clear"></div>
+
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

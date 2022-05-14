@@ -1,0 +1,340 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Content/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/dist/css/adminlte.min.css" rel="stylesheet" />
+    <link href="~/Content/Sweet/sweetalert2.min.css" rel="stylesheet" />
+    <link href="~/Content/chart.css" rel="stylesheet" />
+
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <style>
+        .nav-link active{
+           
+        }
+    </style>
+</head>
+
+@if (Session["UserName"] != null)
+{
+    <body class="hold-transition sidebar-mini">
+
+    <div class="wrapper">
+
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand bg-white navbar-light border-bottom">
+            <!-- Left navbar links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars"></i></a>
+                </li>
+               
+            </ul>
+
+
+            <!-- Right navbar links -->
+            <ul class="navbar-nav ml-auto">
+                <!-- Messages Dropdown Menu -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user-o"></i>
+                        <span class="badge badge-danger navbar-badge">3</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <a href="#" class="dropdown-item">
+                            <!-- Message Start -->
+                            <div class="media">
+                                <img src="~/Content/dist/img/user.png" class="img-size-50 mr-3 img-circle" alt="Admin"/>
+                                <div class="media-body">
+                                
+                                    <h3 class="dropdown-item-title">
+                                       Admin
+                                        <span class="float-right text-sm text-danger"><i class="fa fa-star"></i></span>
+                                    </h3>
+                                    <p class="text-sm">Sweet Online Banking System Admin Dashboard</p>
+                                </div>
+                            </div>
+                            <!-- Message End -->
+                        </a>
+  
+                        <div class="dropdown-divider"></div>
+                        <a href="/AdminLogin/index/" class="dropdown-item dropdown-footer">Logout</a>
+                    </div>
+                </li>
+            
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#">
+                        <i class="fa fa-th-large"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.navbar -->
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Brand Logo -->
+            <a href="index3.html" class="brand-link">
+                @*<img src="~/Content/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+                     style="opacity: .8">*@
+                <img src="~/Content/dist/img/ADS.jpg" alt="AdminLTE Logo" class="brand-image img-circle"/>
+                <span class="brand-text font-weight-light">ADS Online Banking</span>
+               
+            </a>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <!-- Add icons to the links using the .nav-icon class
+                             with font-awesome or any other icon font library -->
+                        <li class="nav-item">
+                            <a href="/Customer/dashboard/" class="nav-link" style=" background-color:#494f58;">
+                                <i class="nav-icon fa fa-dashboard"></i>
+                                <p>
+                                    Dashboard
+                                    <span class="right badge badge-danger"><i class="fa fa-table"></i></span>
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item has-treeview menu-open">
+                            <a href="#" class="nav-link active" style=" background-color:#494f58;">
+                                <i class="nav-icon fa fa-user"></i>
+                                <p>
+                                   Customer
+                                    <i class="right fa fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="/Customer" class="nav-link ">
+                                        <i class="fa fa-circle-o nav-icon"></i>
+                                        <p>Customer List</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/Customer/Create" class="nav-link">
+                                        <i class="fa fa-circle-o nav-icon"></i>
+                                        <p>Create</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item has-treeview menu-open" >
+                            <a href="#" class="nav-link active" style="background-color:#494f58;">
+                                <i class="nav-icon fa fa-list"></i>
+                                <p>
+                                    Customer Accounts
+                                    <i class="right fa fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="/customer/customeraccounts" class="nav-link ">
+                                        <i class="fa fa-circle-o nav-icon"></i>
+                                        <p>Account List</p>
+                                    </a>
+                                </li>
+                                @*<li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="fa fa-circle-o nav-icon"></i>
+                                        <p>Create</p>
+                                    </a>
+                                </li>*@
+                            </ul>
+                        </li>
+
+                        <li class="nav-item has-treeview menu-open">
+                            <a href="#" class="nav-link active" style=" background-color:#494f58;">
+                                <i class="nav-icon fa fa-list"></i>
+                                <p>
+                                    Transaction Reports
+                                    <i class="right fa fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="/Transaction/Index" class="nav-link ">
+                                        <i class="fa fa-circle-o nav-icon"></i>
+                                        <p>All Reports</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/Customer/TransactionsByDayRange" class="nav-link">
+                                        <i class="fa fa-circle-o nav-icon"></i>
+                                        <p>Transfer Report</p>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="/Customer/TransactionByCustomerId" class="nav-link">
+                                        <i class="fa fa-circle-o nav-icon"></i>
+                                        <p>Customer Inqury</p>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+
+
+                        @*<li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fa fa-th"></i>
+                                <p>
+                                    Simple Link
+                                    <span class="right badge badge-danger">New</span>
+                                </p>
+                            </a>
+                        </li>*@
+                    </ul>
+                </nav>
+                <!-- /.sidebar-menu -->
+            </div>
+            <!-- /.sidebar -->
+        </aside>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            @*<h1 class="m-0 text-dark">Starter Page</h1>*@
+                        </div><!-- /.col -->
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                @*<li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active">Starter Page</li>*@
+                            </ol>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </div>
+            <!-- /.content-header -->
+            <!-- Main content -->
+            <div class="content">
+                <div class="container-fluid">
+                    @RenderBody()
+                </div>
+            </div>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+            <div class="p-3">
+                <h5>Title</h5>
+                <p>Sidebar content</p>
+            </div>
+        </aside>
+        <!-- /.control-sidebar -->
+        <!-- Main Footer -->
+        <footer class="main-footer">
+            <!-- To the right -->
+            <div class="float-right d-none d-sm-inline">
+                Anything you want
+            </div>
+            <!-- Default to the left -->
+            <strong>Copyright &copy; 2019-2020 <a href="https://adminlte.io">Talent Program .Net Group(2)/Second Batch.</a>.</strong> All rights reserved.
+        </footer>
+    </div>
+
+
+    @*<div>
+
+        </div>*@
+</body>
+}
+
+</html>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Content/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="~/Content/plugins/datatables/jquery.dataTables.js"></script>
+<script src="~/Content/plugins/datatables/dataTables.bootstrap4.js"></script>
+<script src="~/Content/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="~/Content/dist/js/adminlte.min.js"></script>
+<script src="~/Content/Sweet/sweetalert2.min.js"></script>
+
+<script>
+    function SuccessMessageBox(text) {
+        swal({
+            title: 'Success!', //Title
+            text: text, //Description
+            type: 'success',
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        });
+    }
+
+    function ErrorMessageBox(text) {
+        swal({
+            title: 'Error!',
+            text: text,
+            type: 'error',
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        });
+    }
+
+    function WarningMessageBox(text) {
+        swal({
+            title: 'Warning!',
+            text: text,
+            type: 'warning',
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        });
+    }
+
+    function InfoMessageBox(text) {
+        swal({
+            title: 'Information!',
+            text: text,
+            type: 'info',
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        });
+    }
+
+    function SuccessMessageBoxWithLink(text, link) {
+        swal({
+            title: 'Success!',
+            text: text,
+            type: 'success',
+            allowOutsideClick: false,
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Ok',
+            allowEscapeKey: false
+        }).then(function () {
+            window.location = link;
+        });
+    }
+
+    function ConfirmMessageBox(title, message, callback) {
+        swal({
+            title: title,
+            text: message,
+            type: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            //confirmButtonClass: 'btn btn-success',
+            //cancelButtonClass: 'btn btn-danger',
+        }).then((confirmed) => {
+            callback(confirmed && confirmed.value == true);
+        });
+    }
+</script>

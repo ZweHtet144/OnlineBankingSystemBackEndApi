@@ -1,0 +1,151 @@
+﻿@model IEnumerable<Banking_Project.Models.Customer>
+<link href="~/Content/plugins/datatables/dataTables.bootstrap4.css" rel="stylesheet" />
+<link href="~/Content/jquery.dataTables.css" rel="stylesheet" />
+<link href="~/Content/Sweet/sweetalert2.min.css" rel="stylesheet" />
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.dataTables.js"></script>
+<script src="~/Content/Sweet/sweetalert2.min.js"></script>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+@if(Session["UserName"] != null)
+{
+    <h2>Welcome @Session["UserName"].ToString()</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create",new { @class="btn btn-info"})
+</p>
+
+    <table id="example1" class="table table-bordered table-hover ">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CustomerName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NRC)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.Phoneno)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Address)
+                  
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedDate)                  
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+
+      <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CustomerName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NRC)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Phoneno)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                         @Html.DisplayFor(modelItem => item.Address)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedDate)
+                      
+                    </td>
+                   
+                    <td>
+                        @Html.ActionLink("Account", "CreateBankAccount", new { id = item.CustomerId }) |
+                        @Html.ActionLink(" ", "Edit", new { id = item.CustomerId }, new { @class= "btn btn-info btn-sm fa fa-edit" }) 
+                        @*@Html.ActionLink(" ", "Delete", new { id = item.CustomerId }, new { @class = "btn btn-danger btn-sm  fa fa-trash" })*@
+                        @*<button type="button" id="delete" class="form-control" onclick="DeleteItem('@item.CustomerId')">Delete</button>*@
+                        <input type="hidden" id="del" value="@item.CustomerId" />
+                        <button class="btn btn-sm btn-danger delete"><i class="fa fa-trash"></i></button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+
+}
+else
+{
+    Response.Redirect("/adminlogin/index");
+}
+
+    @*<script>
+
+        $(document).ready(function () {
+            $('#table_id').DataTable();
+        });
+    </script>*@
+
+
+<script type="text/javascript">
+            function preventBack() {
+                window.history.forward();
+            }
+            setTimeout("preventBack()", 0);
+            window.onunload = function () {
+                null;
+            }
+</script>
+
+<script>
+    $('.delete').click(function () {
+
+
+        var CustomerId = $('#del').val();
+
+        var message = " Customer Number '" + CustomerId + "'";
+
+
+
+        ConfirmMessageBox("Are you sure? Disable Customer", message, function (confirmed) {
+            if (confirmed) {
+                // YES
+                $.ajax({
+                    type: "POST",
+                    url: '/Customer/Delete',
+                    data: { CustomerId },
+                    dataType: "JSON",
+                    success: function (response) {
+                        if (response.msg.RespMessageType == "MS") {
+                            SuccessMessageBoxWithLink('Deleted', '/Customer')
+                        }
+                        else if (response.msg.RespMessageType == "ME") {
+                            WarningMessage(response.msg.RespMessageType);
+                        }
+                    }
+                });
+            }
+            else {
+                // NO
+                ErrorMessage('Cancel Delete!!');
+
+            }
+        });
+    });
+</script>
+
+
+

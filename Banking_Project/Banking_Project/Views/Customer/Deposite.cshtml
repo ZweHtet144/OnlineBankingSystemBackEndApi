@@ -1,0 +1,58 @@
+﻿@model Banking_Project.Models.Account
+
+@{
+    ViewBag.Title = "Deposite";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<link href="//fonts.googleapis.com/css?family=Josefin+Sans:300,400,600,700" rel="stylesheet">
+<link href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+<link href="~/Content/dist/css/form.css" rel="stylesheet" />
+<style>
+    .bg {
+     background-image: url('../../Content/dist/img/banner.jpg');
+     background-size:cover;
+    }
+</style>
+@if (Session["UserName"] != null)
+{
+
+    using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <div class="bg">
+            <div class="bg-w3layouts-main">
+                <h2 class="text-center text-success">Depostie Form</h2>
+                <div class="form-content-agileinfo">
+
+                    <div class="main-divs-agileits-w3layouts">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="bottom-w3-agileits-space form-text1 ">
+                            @Html.EditorFor(model => model.AccountNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            @Html.ValidationMessageFor(model => model.AccountNo, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="bottom-w3-agileits-space form-text2">
+                            @Html.EditorFor(model => model.AccountType, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            @Html.ValidationMessageFor(model => model.AccountType, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="main-divs-agileits-w3layouts">
+                        <div class="bottom-w3-agileits-space form-text1">
+                            @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control",pattern = "[0-9]{4,7}",required="required"} })
+                            @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <input type="submit" value="Deposite" class="btn btn-success">
+                <div class="clear"></div>
+
+            </div>
+        </div>
+       
+
+    }
+}
+else
+{
+    Response.Redirect("/adminlogin/index");
+}

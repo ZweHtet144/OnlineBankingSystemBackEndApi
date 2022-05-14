@@ -1,0 +1,72 @@
+﻿@model Banking_Project.Models.Admin
+
+@{
+    ViewBag.Title = "AdminLogin";
+    Layout = "";
+
+}
+<script>
+         addEventListener("load", function () { setTimeout(hideURLbar, 0); }, false); function hideURLbar() { window.scrollTo(0, 1); }
+</script>
+<link href="~/Content/dist/css/loginstyle.css" rel="stylesheet" />
+ <link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700" rel="stylesheet">
+
+<link href="~/Content/Sweet/sweetalert2.min.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-3.4.1.min.js">
+</script>
+<script src="~/Content/Sweet/sweetalert2.all.min.js">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9">
+</script>
+
+<body>
+<div class="mid-class">
+    <div class="art-right-w3ls">
+        <h2>Sign In Form</h2>
+        <form action="#" method="post">
+            <div class="main">
+                <div class="form-left-to-w3l">
+                    @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { autocomplete = "off",placeholder="EnterUserName"} })
+                </div>
+
+                <div class="form-left-to-w3l">
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { autocomplete = "off", placeholder = "EnterEmail" } })
+                </div>
+
+                <div class="form-left-to-w3l ">
+                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { autocomplete = "off", placeholder = "EnterPassword" } })
+                    <div class="clear"></div>
+                </div>
+            </div>          
+            <div class="left-side-forget">
+                <input type="checkbox" class="checked">
+                <span class="remenber-me">Remember me </span>
+            </div>
+            <div class="clear"></div>
+            <div class="btnn">
+                <button type="submit">Sign In</button>
+            </div>
+        </form>
+    </div>
+    <div class="art-left-w3ls">
+        @if (ViewData["message"] != null)
+        {
+            <script>
+                        Swal.fire({
+                        icon: 'error',
+                        title: 'Login Failed',
+                        text: 'Email or Password Incorrect',
+                        })
+            </script>
+        }
+        <h1 class="header-w3ls">
+                Banking Accounts Management System Admin Login
+        </h1>
+    </div>
+   </div>
+    </body>
+    @*section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    }*@
+
+   

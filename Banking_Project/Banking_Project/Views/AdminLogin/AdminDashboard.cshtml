@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewBag.Title = "Welcome";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+@if (Session["UserName"] != null)
+{
+    <h2>Welcome @Session["UserName"].ToString()</h2>
+}
+else
+{
+    Response.Redirect("Index");
+}
+@Html.ActionLink("Logout", "Index")
+<script type="text/javascript">
+            function preventBack() {
+                window.history.forward();
+            }
+            setTimeout("preventBack()", 0);
+            window.onunload = function () {
+                null;
+            }
+</script>
+
